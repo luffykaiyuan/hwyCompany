@@ -21,7 +21,7 @@ public class IdeaInfoController {
 
     @PostMapping(value = "/insertIdea", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String insertIdea(@RequestBody IdeaInfoPo ideaInfoPo){
+    public String insertIdea(@RequestBody IdeaInfoPo ideaInfoPo) throws Exception {
         ideaInfoService.insertIdea(ideaInfoPo);
         return "success";
     }
