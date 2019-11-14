@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.UUID;
 
+/** 
+* @Description: 意见提出的控制类
+* @Author: 陈开源
+* @Date: 2019/11/14 
+*/
+
 @Controller
 @RequestMapping("/idea")
 public class IdeaInfoController {
@@ -19,6 +25,13 @@ public class IdeaInfoController {
     @Autowired
     IdeaInfoService ideaInfoService;
 
+    /** 
+    * @Description: 新增意见 
+    * @Param: [ideaInfoPo] 
+    * @return: java.lang.String 
+    * @Author: 陈开源
+    * @Date: 2019/11/14 
+    */
     @PostMapping(value = "/insertIdea", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String insertIdea(@RequestBody IdeaInfoPo ideaInfoPo) throws Exception {

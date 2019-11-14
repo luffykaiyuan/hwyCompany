@@ -15,7 +15,9 @@ public class IdeaInfoService {
     IdeaInfoMapper ideaInfoMapper;
 
     public void insertIdea(IdeaInfoPo ideaInfoPo) throws Exception {
+        //发送邮件
         SendMail.send(ideaInfoPo.getPersonName(), ideaInfoPo.getContactInfo(), ideaInfoPo.getContent());
+        //生成32位的随机数作为主键ID
         String uid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
         ideaInfoPo.setId(uid);
         ideaInfoMapper.insert(ideaInfoPo);
