@@ -31,4 +31,9 @@ public class EntryController {
     public String entryReaseNews() {
         return "releaseNews";
     }
+
+    @RequestMapping("/ceshi")
+    public String entryCeshi() {
+        return "ueditor/ceshi";
+    }
 }

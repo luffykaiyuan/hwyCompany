@@ -2,9 +2,163 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="shortcut icon" href="favicon.ico">
+    <!-- import Vue before Element -->
+    <script src="./js/jquery.js"></script>
+    <script src="./js/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
     <title>新闻发布</title>
 </head>
+<style>
+    [v-cloak]{
+        display: none;
+    }
+</style>
 <body>
-新闻发布
+<div id="editor">
+    <p>请输入新闻内容...</p>
+</div>
+<div id="app" v-cloak>
+    <el-button type="primary" @click="submitForm">发布新闻</el-button>
+</div>
 </body>
+<!-- 富文本编辑器 ！！！-->
+<script type="text/javascript" src="./js/wangEditor.js"></script>
+<script type="text/javascript">
+    var E = window.wangEditor
+    var editor = new E('#editor') // 两个参数也可以传入 elem 对象，class 选择器
+    // editor.customConfig.uploadImgShowBase64 = true // 使用 base64 保存图片
+    // 配置服务器端地址
+    editor.customConfig.uploadImgServer = '/hwyCompany/img/upload'
+    // 将图片大小限制为 3M
+    editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024;
+    // 隐藏“网络图片”tab
+    editor.customConfig.showLinkImg = false
+    // 自定义上传参数
+    editor.customConfig.uploadFileName = 'imgFile'
+    editor.customConfig.uploadImgHooks = {
+        before : function(xhr, editor, files) {
+            // 图片上传之前触发
+            // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，files 是选择的图片文件
+
+            // 如果返回的结果是 {prevent: true, msg: 'xxxx'} 则表示用户放弃上传
+            // return {
+            //     prevent: true,
+            //     msg: '放弃上传'
+            // }
+        },
+        success : function(xhr, editor, result) {
+            // 图片上传并返回结果，图片插入成功之后触发
+            // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
+        },
+        fail : function(xhr, editor, result) {
+            // 图片上传并返回结果，但图片插入错误时触发
+            // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象，result 是服务器端返回的结果
+        },
+        error : function(xhr, editor) {
+            // 图片上传出错时触发
+            // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象
+        },
+        timeout : function(xhr, editor) {
+            // 图片上传超时时触发
+            // xhr 是 XMLHttpRequst 对象，editor 是编辑器对象
+        },
+
+        // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
+        // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
+        customInsert : function(insertImg, result, editor) {
+            // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
+            // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
+
+            // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
+            var url = result.url
+            insertImg(url)
+
+            // result 必须是一个 JSON 格式字符串！！！否则报错
+        }
+    }
+    // 必须放到有关于编辑器设置前面
+    editor.create()
+</script>
+<!--VUE的东西-->
+<script>
+    var vue1 = new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                contextPath:'',
+                urls:{
+                    insertIdea: '/idea/insertIdea'
+                },
+                ideaForm: {
+                    personName: '',
+                    contactInfo: '',
+                    content: ''
+                },
+                ideaFormRules: {
+                    personName: [
+                        { required: true, message: '请输入您的姓名', trigger: 'blur' },
+                        { max: 16, message: '最长为16个字符', trigger: 'blur' }
+                    ],
+                    contactInfo: [
+                        { required: true, message: '请输入您的联系方式', trigger: 'blur' },
+                        { max: 50, message: '最长为50个字符', trigger: 'blur' }
+                    ],
+                    content: [
+                        { required: true, message: '请输入意见内容', trigger: 'blur' },
+                        { max: 500, message: '最长为500个字符', trigger: 'blur' }
+                    ]
+                }
+            }
+        },
+        created: function () {
+            var contextPath = document.location.pathname;
+            var contextPath = contextPath.split('/')[1];
+            var contextPath = "/" + contextPath;
+            this.contextPath = contextPath;
+        },
+        filters: {},
+        mounted: function () {
+
+        },
+        methods: {
+            submitForm() {
+                var self = this;
+                console.log(editor.txt.html());
+                // 读取 text
+                console.log(editor.txt.text())
+                console.log(editor.txt.getJSON());
+                console.log(JSON.stringify(editor.txt.getJSON()));
+
+                // var url = self.contextPath + self.urls.insertIdea;
+                // this.$refs[formName].validate((valid) => {
+                //     if (valid) {
+                //         axios.post(url, self.ideaForm)
+                //             .then(function(res){
+                //                 self.$message({
+                //                     message: '意见已提交！',
+                //                     type: 'success'
+                //                 });
+                //             });
+                //     } else {
+                //         self.$message({
+                //             message: '请确保信息填写完整！',
+                //             type: 'warning'
+                //         });
+                //         return false;
+                //     }
+                // });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            }
+
+        },
+        watch: {}
+    });
+</script>
 </html>
