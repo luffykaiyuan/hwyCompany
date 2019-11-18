@@ -19,11 +19,19 @@
     }
 </style>
 <body>
+<span style="font-size: 20px;font-weight: normal; color: rgba(52,148,243,1)">▌</span>新闻发布
+<hr>
+<div style="text-align: center">
+    新闻标题：<input type="text" name="newsTitle" id="newsTitle"/>
+</div>
+<br>
 <div id="editor">
     <p>请输入新闻内容...</p>
 </div>
+<hr>
+<br>
 <div id="app" v-cloak>
-    <el-button type="primary" @click="submitForm">发布新闻</el-button>
+    <el-button style="display:block;margin:0 auto" type="primary" @click="submitForm">发布新闻</el-button>
 </div>
 </body>
 <!-- 富文本编辑器 ！！！-->
@@ -92,12 +100,11 @@
             return {
                 contextPath:'',
                 urls:{
-                    insertIdea: '/idea/insertIdea'
+                    insertNews: '/news/insertNews'
                 },
-                ideaForm: {
-                    personName: '',
-                    contactInfo: '',
-                    content: ''
+                newsForm: {
+                    newsTitle: '',
+                    newsContent: '',
                 },
                 ideaFormRules: {
                     personName: [
@@ -128,30 +135,39 @@
         methods: {
             submitForm() {
                 var self = this;
-                console.log(editor.txt.html());
-                // 读取 text
-                console.log(editor.txt.text())
-                console.log(editor.txt.getJSON());
-                console.log(JSON.stringify(editor.txt.getJSON()));
-
-                // var url = self.contextPath + self.urls.insertIdea;
-                // this.$refs[formName].validate((valid) => {
-                //     if (valid) {
-                //         axios.post(url, self.ideaForm)
-                //             .then(function(res){
-                //                 self.$message({
-                //                     message: '意见已提交！',
-                //                     type: 'success'
-                //                 });
-                //             });
-                //     } else {
-                //         self.$message({
-                //             message: '请确保信息填写完整！',
-                //             type: 'warning'
-                //         });
-                //         return false;
-                //     }
-                // });
+                this.newsForm.newsContent = editor.txt.html();
+                if (this.newsForm.newsContent.length > 4000){
+                    self.$message({
+                        message: '新闻内容过长！',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                this.newsForm.newsTitle = document.getElementById("newsTitle").value;
+                if (this.newsForm.newsTitle == '' || this.newsForm.newsTitle == null){
+                    self.$message({
+                        message: '新闻标题不能为空！',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                if (this.newsForm.newsTitle.length > 30){
+                    self.$message({
+                        message: '新闻标题长度不能超过30个字符！',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                var url = self.contextPath + self.urls.insertNews;
+                axios.post(url, self.newsForm)
+                    .then(function(res){
+                        console.log(res);
+                        self.$message({
+                            message: '新闻已发布成功，3秒后跳转到新闻列表！',
+                            type: 'success'
+                        });
+                        setTimeout("javascript:location.href='newsList'", 3000);
+                    });
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
