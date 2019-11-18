@@ -34,6 +34,6 @@ public class EntryController {
 
     @RequestMapping("/ceshi")
     public String entryCeshi() {
-        return "ueditor/ceshi";
+        return "ceshi";
     }
 }
