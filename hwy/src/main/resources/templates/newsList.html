@@ -17,10 +17,10 @@
     <meta name="robots" content="noindex">
 
     <!-- FAV AND TOUCH ICONS   -->
-    <link rel="icon" href="images/favicon.ico">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <link rel="icon" href="./images/favicon.ico">
+    <link rel="apple-touch-icon" href="./images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="./images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./images/apple-touch-icon-114x114.png">
 
     <!-- GOOGLE FONTS -->
     <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,700,900' rel='stylesheet' type='text/css'>
@@ -29,21 +29,21 @@
     <!-- font-family: 'Open Sans', sans-serif; -->
 
     <!-- BOOTSTRAP CSS -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
 
     <!-- Image Slider -->
-    <link rel="stylesheet" href="css/plagin-css/owl.carousel.css">
+    <link rel="stylesheet" href="./css/plagin-css/owl.carousel.css">
 
     <!-- FONT ICONS -->
-    <link rel="stylesheet" href="icons/rik-icons/styles.css">
+    <link rel="stylesheet" href="./icons/rik-icons/styles.css">
 
     <!--   COUSTOM CSS link  -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/responsive.css">
 
     <!--[if lt IE 9]>
-    <script src="js/plagin-js/html5shiv.js"></script>
-    <script src="js/plagin-js/respond.min.js"></script>
+    <script src="./js/plagin-js/html5shiv.js"></script>
+    <script src="./js/plagin-js/respond.min.js"></script>
     <![endif]-->
 
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
@@ -182,29 +182,26 @@
         </div> <!-- End: .inner-container -->
 
     </div>
+
+    <el-dialog title="新闻内容" :visible.sync="dialogVisible" width="60%">
+        <div ref="firstDiv" id="firstDiv"></div>
+    </el-dialog>
     <!--End: 4th Section
         - TESTIMONIAL PAGE
     ====================================-->
 
     <!-- SCRIPTS
     ========================================-->
-    <script src="js/plagin-js/jquery-1.11.3.js"></script>
-    <script src="js/plagin-js/preloader.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="js/plagin-js/plagin.js"></script>
-
-    <!-- Custom Script
-    ==========================================-->
-    <script src="js/custom-scripts.js"></script>
-    <el-dialog title="新闻内容"
-               :visible.sync="dialogVisible"
-               width="30%">
-        <div>{{newsContent}}</div>
-        </span>
-    </el-dialog>
-
 </div>
 </body>
+<script src="./js/plagin-js/jquery-1.11.3.js"></script>
+<script src="./js/plagin-js/preloader.js"></script>
+<script src="./bootstrap/js/bootstrap.min.js"></script>
+<script src="./js/plagin-js/plagin.js"></script>
+
+<!-- Custom Script
+==========================================-->
+<script src="js/custom-scripts.js"></script>
 <script>
     var vue1 = new Vue({
         el: '#app',
@@ -241,8 +238,22 @@
         methods: {
             lookNews(index){
                 this.dialogVisible = true;
-                console.log(index);
-                this.newsContent = this.newsList[index].newsContent;
+                var oneDiv = document.createElement("div");
+                oneDiv.innerHTML = this.newsList[index].newsContent;
+                this.$nextTick(() => {
+                    var firstDiv = this.$refs.firstDiv;
+                    firstDiv.innerHTML = "";
+                    firstDiv.append(oneDiv);
+                })
+                // var fatherDialog = document.getElementById("fatherDialog");
+                // fatherDialog.appendChild(oneDiv);
+                // var oneDialog = document.getElementsByClassName("el-dialog__wrapper");
+                // var twoDialog = document.getElementsByClassName("el-dialog");
+                // var threeDialog = document.getElementsByClassName("el-dialog__body");
+                // threeDialog.appendChild(oneDiv);
+                // twoDialog.appendChild(threeDialog);
+                // oneDialog.appendChild(twoDialog);
+                // this.newsContent = decodeHtml(this.newsList[index].newsContent);
             },
         },
         watch: {}

@@ -17,6 +17,9 @@
     [v-cloak]{
         display: none;
     }
+    .w-e-text-container{
+        height: 700px !important;/*!important是重点，因为原div是行内样式设置的高度300px*/
+    }
 </style>
 <body>
 <span style="font-size: 20px;font-weight: normal; color: rgba(52,148,243,1)">▌</span>新闻发布
@@ -89,6 +92,54 @@
             // result 必须是一个 JSON 格式字符串！！！否则报错
         }
     }
+    //配置菜单
+    editor.customConfig.menus = [
+        'head',
+        'bold',
+        'fontSize',
+        'fontName',
+        'italic',
+        'underline',
+        'strikeThrough',
+        'foreColor',
+        'backColor',
+        'link',
+        'list',
+        'justify',
+        'emoticon',
+        'image',
+        'table',
+        'undo',
+        'redo',
+    ]
+    // 表情面板可以有多个 tab ，因此要配置成一个数组。数组每个元素代表一个 tab 的配置
+    editor.customConfig.emotions = [
+        {
+            // tab 的标题
+            title: '默认',
+            // type -> 'emoji' / 'image'
+            type: 'image',
+            // content -> 数组
+            content: [
+                {
+                    alt: '[坏笑]',
+                    src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/50/pcmoren_huaixiao_org.png'
+                },
+                {
+                    alt: '[舔屏]',
+                    src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/40/pcmoren_tian_org.png'
+                }
+            ]
+        },
+        {
+            // tab 的标题
+            title: 'emoji',
+            // type -> 'emoji' / 'image'
+            type: 'emoji',
+            // content -> 数组
+            content: ['😀', '😃', '😄', '😁', '😆']
+        }
+    ]
     // 必须放到有关于编辑器设置前面
     editor.create()
 </script>
