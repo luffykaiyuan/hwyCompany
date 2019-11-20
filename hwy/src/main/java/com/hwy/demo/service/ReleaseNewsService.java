@@ -1,6 +1,7 @@
 package com.hwy.demo.service;
 
 import com.hwy.demo.po.ImgInfo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,11 +12,13 @@ import java.io.FileOutputStream;
 @Service
 public class ReleaseNewsService {
 
+    @Value("${uploadPath}")
+    String getPath;
+
     public ImgInfo setImgUrl(MultipartFile file, HttpServletResponse response) throws Exception {
         // Get the file and save it somewhere
         byte[] bytes = file.getBytes();
-//        System.out.println(new String(bytes));
-        String path = "D:\\upload\\img";
+        String path = getPath;
         File imgFile = new File(path);
         if (!imgFile.exists()) {
             imgFile.mkdirs();

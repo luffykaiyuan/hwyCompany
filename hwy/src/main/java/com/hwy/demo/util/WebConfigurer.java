@@ -1,6 +1,7 @@
 package com.hwy.demo.util;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -15,10 +16,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootConfiguration
 public class WebConfigurer implements WebMvcConfigurer {
 
+    @Value("${uploadPath}")
+    String getPath;
+
     //拦截器省略
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/upload/img/**").addResourceLocations("file:" + "d:/upload/img/");
+        registry.addResourceHandler("/upload/img/**").addResourceLocations("file:" + getPath);
     }
 
 }
