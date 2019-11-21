@@ -5,7 +5,7 @@ spring:
       suffix: /
       prefix: .html
   thymeleaf:
-    cache: true
+    cache: false
   #热部署
   devtools:
     restart:
@@ -30,3 +30,7 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
 
 uploadPath: D:/upload/img
+
+sys:
+  username: admin
+  pass: admin

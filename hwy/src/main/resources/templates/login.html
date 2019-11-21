@@ -3,30 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <title>登录界面</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="shortcut icon" href="favicon.ico">
+    <!-- import Vue before Element -->
+    <script src="./js/jquery.js"></script>
+    <script src="./js/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
 </head>
-<!-- 新 Bootstrap 核心 CSS 文件 -->
-<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<body>
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-12 column">
-            <form action="/hwyCompany/doLogin" method="post">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">账号</label><input class="form-control" id="exampleInputEmail1" name="username"/>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">密码</label><input type="password" class="form-control" id="exampleInputPassword1" name="password"/>
-                </div>
-                <button type="submit" class="btn btn-default">登录</button>
-            </form>
-        </div>
-    </div>
-</div>
-</body>
+<style>
+    [v-cloak]{
+        display: none;
+    }
+    .text {
+        font-size: 14px;
+    }
 
+    .item {
+        margin-bottom: 18px;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+    .clearfix:after {
+        clear: both
+    }
+
+    .box-card {
+        width: 480px;
+    }
+</style>
+<body>
+<div id="app" v-cloak>
+    <el-container>
+        <el-header style="height: 250px"></el-header>
+        <el-main>
+            <el-row>
+                <el-col :span="8" :offset="9">
+                    <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span>管理员登录</span>
+                    </div>
+                        <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="100px" class="demo-loginForm">
+                            <el-form-item label="账号" prop="username">
+                                <el-input placeholder="请输入账号" v-model="loginForm.username"></el-input>
+                            </el-form-item>
+                            <el-form-item label="密码" prop="password">
+                                <el-input placeholder="请输入密码" show-password v-model="loginForm.password"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="submitForm('loginForm')">立即创建</el-button>
+                                <el-button @click="resetForm('loginForm')">重置</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-card>
+                </el-col>
+            </el-row>
+        </el-main>
+    </el-container>
+</div>
+<!--<div class="container">-->
+<!--    <div class="row clearfix">-->
+<!--        <div class="col-md-12 column">-->
+<!--            <form action="/hwyCompany/doLogin" method="post">-->
+<!--                <div class="form-group">-->
+<!--                    <label for="exampleInputEmail1">账号</label><input class="form-control" id="exampleInputEmail1" name="username"/>-->
+<!--                </div>-->
+<!--                <div class="form-group">-->
+<!--                    <label for="exampleInputPassword1">密码</label><input type="password" class="form-control" id="exampleInputPassword1" name="password"/>-->
+<!--                </div>-->
+<!--                <button type="submit" class="btn btn-default">登录</button>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+</body>
+<script>
+    var vue1 = new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                contextPath:'',
+                urls:{
+                    loginUrl: '/doLogin'
+                },
+                loginForm: {
+                    username: '',
+                    password: '',
+                },
+                rules: {
+                    username: [
+                        { required: true, message: '请输入账号', trigger: 'blur' },
+                        { max: 11, message: '长度在 11 个字符之内', trigger: 'blur' }
+                    ],
+                    password: [
+                        { required: true, message: '请输入密码', trigger: 'blur' },
+                        { max: 11, message: '长度在 11 个字符之内', trigger: 'blur' }
+                    ],
+                }
+            }
+        },
+        created: function () {
+            var contextPath = document.location.pathname;
+            var contextPath = contextPath.split('/')[1];
+            var contextPath = "/" + contextPath;
+            this.contextPath = contextPath;
+        },
+        filters: {},
+        mounted: function () {
+
+        },
+        methods: {
+            submitForm(formName) {
+                var self = this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var url = self.contextPath + self.urls.loginUrl;
+                        axios.post(url, self.loginForm,)
+                            .then(function (res) {
+                                if (res.data == 'login'){
+                                    self.$message.error({
+                                        message: '账号密码错误！',
+                                    });
+                                    return;
+                                }
+                                location.href=res.data;
+                            })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            }
+        },
+        watch: {}
+    });
+</script>
 </html>
 
