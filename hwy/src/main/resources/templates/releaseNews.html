@@ -157,20 +157,6 @@
                     newsTitle: '',
                     newsContent: '',
                 },
-                ideaFormRules: {
-                    personName: [
-                        { required: true, message: '请输入您的姓名', trigger: 'blur' },
-                        { max: 16, message: '最长为16个字符', trigger: 'blur' }
-                    ],
-                    contactInfo: [
-                        { required: true, message: '请输入您的联系方式', trigger: 'blur' },
-                        { max: 50, message: '最长为50个字符', trigger: 'blur' }
-                    ],
-                    content: [
-                        { required: true, message: '请输入意见内容', trigger: 'blur' },
-                        { max: 500, message: '最长为500个字符', trigger: 'blur' }
-                    ]
-                }
             }
         },
         created: function () {

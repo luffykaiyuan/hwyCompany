@@ -17,9 +17,9 @@ public interface NewsInfoPoMapper {
 
     NewsInfoPo selectByPrimaryKey(String id);
 
-    List<NewsInfoPo> selectAllNews();
-
     int updateByPrimaryKeySelective(NewsInfoPo record);
 
     int updateByPrimaryKey(NewsInfoPo record);
+
+    List<NewsInfoPo> selectAllNews();
 }

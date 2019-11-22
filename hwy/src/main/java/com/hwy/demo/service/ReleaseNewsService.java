@@ -24,10 +24,10 @@ public class ReleaseNewsService {
             imgFile.mkdirs();
         }
         String fileName = file.getOriginalFilename();// 文件名称
-        System.out.println(path + "\\" + fileName);
+        System.out.println(path + fileName);
 
         //写入文件
-        try (FileOutputStream fos = new FileOutputStream(new File(path + "\\" + fileName))) {
+        try (FileOutputStream fos = new FileOutputStream(new File(path + fileName))) {
             fos.write(bytes);
         } catch (Exception e) {
             e.printStackTrace();
