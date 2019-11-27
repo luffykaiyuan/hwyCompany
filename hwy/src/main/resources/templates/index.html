@@ -1435,7 +1435,7 @@
                 if (self.isEmpty(self.ideaForm.personName)) {return false};
                 if (self.isEmpty(self.ideaForm.contactInfo)) {return false};
                 if (self.isEmpty(self.ideaForm.content)) {return false};
-                if (this.ideaForm.personName > 16){
+                if (this.ideaForm.personName.length > 16){
                     self.buttonAble = false;
                     self.$message({
                         message: '姓名长度不能超过16个字符！',
@@ -1443,7 +1443,7 @@
                     });
                     return false;
                 }
-                if (this.ideaForm.contactInfo > 50){
+                if (this.ideaForm.contactInfo.length > 50){
                     self.buttonAble = false;
                     self.$message({
                         message: '联系方式长度不能超过500个字符！',
@@ -1451,7 +1451,7 @@
                     });
                     return false;
                 }
-                if (this.ideaForm.content > 500){
+                if (this.ideaForm.content.length > 500){
                     self.buttonAble = false;
                     self.$message({
                         message: '意见内容长度不能超过500个字符！',
