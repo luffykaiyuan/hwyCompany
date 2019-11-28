@@ -226,9 +226,9 @@
                 var oneDiv = document.createElement("div");
                 oneDiv.innerHTML = this.newsList[index].newsContent;
                 this.$nextTick(() => {
-                    var firstDiv = this.$refs.firstDiv;
-                    firstDiv.innerHTML = "";
-                    firstDiv.append(oneDiv);
+                    var firDiv = document.getElementById("firstDiv");
+                    firDiv.innerHTML = "";
+                    firDiv.append(oneDiv);
                 })
                 // var fatherDialog = document.getElementById("fatherDialog");
                 // fatherDialog.appendChild(oneDiv);
