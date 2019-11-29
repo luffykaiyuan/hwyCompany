@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="shortcut icon" href="favicon.ico">
+    <!-- import Vue before Element -->
+    <script src="./js/jquery.js"></script>
+    <script src="./js/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <title>任务列表</title>
+</head>
+<style>
+    [v-cloak]{
+        display: none;
+    }
+    .el-row {
+        margin-bottom: 8px;
+    }
+    .el-col {
+        border-radius: 4px;
+    }
+    .grid-content {
+        border-radius: 4px;
+        min-height: 36px;
+    }
+    .row-bg {
+        padding: 10px 0;
+        background-color: #f9fafc;
+    }
+    .el-divider--horizontal{
+        margin: 0;
+    }
+</style>
+<body>
+<div id="app" v-cloak>
+    <el-row>
+        <el-col :span="24">
+            <el-col :span="22">
+                <div class="grid-content bg-purple">
+                    <img style="width: 2%; border-radius: 15px;float: left" src="">
+                </div>
+            </el-col>
+            <el-col :span="2">
+                <div class="grid-content bg-purple-light">
+                    <span style="font-size: 14px;">欢迎您,管理员</span>
+                </div>
+            </el-col>
+        </el-col>
+    </el-row>
+    <el-divider></el-divider>
+    <el-row>
+        <el-col :span="4">
+            <div class="grid-content bg-purple">
+                <el-menu
+                        style="height: 930px"
+                        default-active="2"
+                        class="el-menu-vertical-demo"
+                        >
+                    <el-submenu index="1">
+                        <template slot="title">
+                            <i class="el-icon-s-order"></i>
+                            <span>系统管理</span>
+                        </template>
+                        <el-menu-item index="1-1" @click="getNews">新闻管理</el-menu-item>
+                        <el-menu-item index="1-2" @click="getIdea">意见管理</el-menu-item>
+                    </el-submenu>
+                </el-menu>
+            </div>
+        </el-col>
+        <el-col :span="2" :offset="18" v-if="changeFlag == 'news'">
+            <el-button type="primary" @click="releaseNews">新增任务</el-button>
+        </el-col>
+        <el-col :span="20" v-if="changeFlag == 'news'">
+            <el-divider></el-divider>
+            <el-table :data="newsData" border style="width: 100%">
+                <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
+                <el-table-column prop="newsTitle" label="新闻标题"></el-table-column>
+                <el-table-column prop="addTime" label="发布时间"></el-table-column>
+                <el-table-column fixed="right" width="180" label="操作">
+                    <template slot-scope="scope">
+                        <span style="cursor:pointer; color: #33B78E; margin-left: 5px" class="el-icon-view"
+                              @click="lookNews(scope.row)">查看</span>
+                        <span style="cursor:pointer; color: #0081E0; margin-left: 5px" class="el-icon-edit"
+                              @click="editNews(scope.row)">编辑</span>
+                        <span style="cursor:pointer; color: #DB1C1C; margin-left: 5px" class="el-icon-delete"
+                              @click="deleteNews(scope.row)">删除</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-col>
+        <el-col :span="20" v-if="changeFlag == 'idea'">
+            <el-table :data="ideaData" border style="width: 100%">
+                <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
+                <el-table-column prop="personName" label="姓名"></el-table-column>
+                <el-table-column prop="contactInfo" label="联系方式"></el-table-column>
+                <el-table-column prop="content" label="意见内容"></el-table-column>
+                <el-table-column prop="addTime" label="提出时间"></el-table-column>
+                <el-table-column fixed="right" width="180" label="操作">
+                    <template slot-scope="scope">
+                        <span style="cursor:pointer; color: #DB1C1C; margin-left: 5px" class="el-icon-delete"
+                        @click="deleteIdea(scope.row)">删除</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-col>
+    </el-row>
+    <el-dialog title="新闻内容" :visible.sync="dialogVisible" width="60%">
+        <div ref="firstDiv" id="firstDiv"></div>
+    </el-dialog>
+</div>
+</body>
+<script>
+    var vue1 = new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                contextPath:'',
+                urls:{
+                    initNews: '/news/selectAllNews',
+                    deleteNews: '/news/deleteNews',
+                    initIdea: '/idea/selectAllIdea',
+                    deleteIdea: '/idea/deleteIdea',
+                },
+                value: '',
+                newsData: [{
+                    newsTitle: '',
+                    newsContent: '',
+                    addTime: '',
+                    status: ''
+                }],
+                ideaData: [{
+                    personName: '',
+                    contactInfo: '',
+                    content: '',
+                    addTime: '',
+                    status: ''
+                }],
+                changeFlag: 'news',
+                dialogVisible: false
+            }
+        },
+        created: function () {
+            var self = this;
+            var contextPath = document.location.pathname;
+            var contextPath = contextPath.split('/')[1];
+            var contextPath = "/" + contextPath;
+            this.contextPath = contextPath;
+            this.initNews();
+            this.initIdea();
+        },
+        filters: {},
+        mounted: function () {
+        },
+        methods: {
+            initNews(){
+                var self = this;
+                var newsUrl = self.contextPath + self.urls.initNews;
+                axios.post(newsUrl)
+                    .then(function(res){
+                        self.newsData = res.data;
+                    });
+            },
+            initIdea(){
+                var self = this;
+                var ideaUrl = self.contextPath + self.urls.initIdea;
+                axios.post(ideaUrl)
+                    .then(function(res){
+                        self.ideaData = res.data;
+                    });
+            },
+            lookNews(row){
+                this.dialogVisible = true;
+                var oneDiv = document.createElement("div");
+                oneDiv.innerHTML = row.newsContent;
+                this.$nextTick(() => {
+                    var firDiv = document.getElementById("firstDiv");
+                    firDiv.innerHTML = "";
+                    firDiv.append(oneDiv);
+                })
+            },
+            editNews(row){
+                window.location.href = this.contextPath + "/releaseNews?id=" + row.id;
+            },
+            releaseNews(){
+                window.location.href = this.contextPath + "/releaseNews";
+            },
+            getNews(){
+                this.changeFlag = 'news';
+            },
+            getIdea(){
+                this.changeFlag = 'idea';
+            },
+            deleteNews(row){
+                var self = this;
+                row.deleteStatus = '1';
+                self.$confirm('删除此条记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var url = self.contextPath  + self.urls.deleteNews;
+                    axios.post(url, row)
+                        .then(function (res) {
+                            self.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            self.initNews();
+                        })
+                }).catch(() => {
+                    self.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            deleteIdea(row){
+                var self = this;
+                row.deleteStatus = '0';
+                self.$confirm('删除此条记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var url = self.contextPath  + self.urls.deleteIdea;
+                    axios.post(url, row)
+                        .then(function (res) {
+                            self.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                            self.initIdea();
+                        })
+                }).catch(() => {
+                    self.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            }
+
+        },
+        watch: {}
+    });
+</script>
+</html>

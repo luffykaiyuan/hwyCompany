@@ -32,6 +32,11 @@ public class EntryController {
         return "releaseNews";
     }
 
+    @RequestMapping("/editNews")
+    public String entryEditNews() {
+        return "editNews";
+    }
+
     @RequestMapping("/ceshi")
     public String entryCeshi() {
         return "ceshi";

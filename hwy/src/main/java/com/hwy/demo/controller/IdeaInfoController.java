@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.UUID;
 
 /** 
@@ -37,5 +38,31 @@ public class IdeaInfoController {
     public String insertIdea(@RequestBody IdeaInfoPo ideaInfoPo) throws Exception {
         ideaInfoService.insertIdea(ideaInfoPo);
         return "success";
+    }
+
+    /** 
+    * @Description: 查询所有意见 
+    * @Param: [] 
+    * @return: java.util.List<com.hwy.demo.po.IdeaInfoPo> 
+    * @Author: 陈开源
+    * @Date: 2019/11/28 
+    */
+    @PostMapping(value = "/selectAllIdea", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<IdeaInfoPo> selectAllIdea(){
+        return ideaInfoService.selectAllIdea();
+    }
+
+    /** 
+    * @Description: 逻辑删除意见 
+    * @Param: [ideaInfoPo] 
+    * @return: int 
+    * @Author: 陈开源
+    * @Date: 2019/11/28 
+    */
+    @PostMapping(value = "/deleteIdea", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public int deleteIdea(@RequestBody IdeaInfoPo ideaInfoPo){
+        return ideaInfoService.updateByPrimaryKeySelective(ideaInfoPo);
     }
 }

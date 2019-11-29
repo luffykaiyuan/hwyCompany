@@ -2,6 +2,7 @@ package com.hwy.demo.service;
 
 import com.hwy.demo.dao.NewsInfoPoMapper;
 import com.hwy.demo.po.NewsInfoPo;
+import com.hwy.demo.util.GetNowDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class NewsInfoService {
     public void insertSelective(NewsInfoPo newsInfoPo){
         String uid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
         newsInfoPo.setId(uid);
-        newsInfoPo.setAddTime(getStringDate());
+        newsInfoPo.setAddTime(GetNowDate.getStringDate());
         newsInfoPo.setDeleteStatus("0");
         newsInfoPoMapper.insertSelective(newsInfoPo);
     }
@@ -33,11 +34,11 @@ public class NewsInfoService {
         newsInfoPoMapper.updateByPrimaryKeySelective(newsInfoPo);
     }
 
-    //获取字符串类型的当前时间
-    public String getStringDate() {
-        Date date = new Date();
-        SimpleDateFormat sdf
-                = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.format(date);
+    public NewsInfoPo selectByPrimaryKey(String id){
+        return newsInfoPoMapper.selectByPrimaryKey(id);
+    }
+
+    public int updateNews(NewsInfoPo newsInfoPo){
+        return newsInfoPoMapper.updateByPrimaryKeySelective(newsInfoPo);
     }
 }

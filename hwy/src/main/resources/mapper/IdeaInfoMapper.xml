@@ -6,12 +6,20 @@
     <result column="person_name" property="personName" jdbcType="VARCHAR" />
     <result column="contact_info" property="contactInfo" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="VARCHAR" />
+    <result column="delete_status" property="deleteStatus" jdbcType="VARCHAR" />
   </resultMap>
+  <select id="selectAllIdea" resultMap="BaseResultMap">
+    select *
+    from idea_info
+    where delete_status = '0'
+    order by add_time desc
+  </select>
   <insert id="insert" parameterType="com.hwy.demo.po.IdeaInfoPo" >
     insert into idea_info (id, person_name, contact_info, 
-      content)
+      content, add_time, delete_status)
     values (#{id,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR}, #{contactInfo,jdbcType=VARCHAR}, 
-      #{content,jdbcType=VARCHAR})
+      #{content,jdbcType=VARCHAR}, #{addTime,jdbcType=VARCHAR}, #{deleteStatus,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hwy.demo.po.IdeaInfoPo" >
     insert into idea_info
@@ -28,6 +36,12 @@
       <if test="content != null" >
         content,
       </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="deleteStatus != null" >
+        delete_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -42,6 +56,17 @@
       <if test="content != null" >
         #{content,jdbcType=VARCHAR},
       </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteStatus != null" >
+        #{deleteStatus,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hwy.demo.po.IdeaInfoPo" >
+    update idea_info
+    set delete_status = '1'
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
 </mapper>
