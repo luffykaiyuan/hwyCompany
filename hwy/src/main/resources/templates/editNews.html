@@ -76,7 +76,7 @@
         </el-col>
         <el-col :span="20" v-if="changeFlag == 'news'">
             <el-divider></el-divider>
-            <el-table :data="newsData" border style="width: 100%">
+            <el-table :data="newsData.slice((currpage - 1) * pagesize, currpage * pagesize)" border style="width: 100%">
                 <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
                 <el-table-column prop="newsTitle" label="新闻标题"></el-table-column>
                 <el-table-column prop="addTime" label="发布时间"></el-table-column>
@@ -91,9 +91,18 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <el-pagination background
+                           layout="prev, pager, next, sizes, total, jumper"
+                           :page-sizes="[5, 10, 15]"
+                           :page-size="pagesize"
+                           :total="newsData.length"
+                           @current-change="handleCurrentChange"
+                           @size-change="handleSizeChange"
+            >
+            </el-pagination>
         </el-col>
         <el-col :span="20" v-if="changeFlag == 'idea'">
-            <el-table :data="ideaData" border style="width: 100%">
+            <el-table :data="ideaData.slice((currpage - 1) * pagesize, currpage * pagesize)" border style="width: 100%">
                 <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
                 <el-table-column prop="personName" label="姓名"></el-table-column>
                 <el-table-column prop="contactInfo" label="联系方式"></el-table-column>
@@ -106,6 +115,15 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <el-pagination background
+                           layout="prev, pager, next, sizes, total, jumper"
+                           :page-sizes="[5, 10, 15]"
+                           :page-size="pagesize"
+                           :total="ideaData.length"
+                           @current-change="handleCurrentChange"
+                           @size-change="handleSizeChange"
+            >
+            </el-pagination>
         </el-col>
     </el-row>
     <el-dialog title="新闻内容" :visible.sync="dialogVisible" width="60%">
@@ -119,6 +137,8 @@
         data: function () {
             return {
                 contextPath:'',
+                pagesize: 10,
+                currpage: 1,
                 urls:{
                     initNews: '/news/selectAllNews',
                     deleteNews: '/news/deleteNews',
@@ -171,6 +191,12 @@
                     .then(function(res){
                         self.ideaData = res.data;
                     });
+            },
+            handleCurrentChange(cpage) {
+                this.currpage = cpage;
+            },
+            handleSizeChange(psize) {
+                this.pagesize = psize;
             },
             lookNews(row){
                 this.dialogVisible = true;
