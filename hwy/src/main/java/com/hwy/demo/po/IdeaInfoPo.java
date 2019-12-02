@@ -9,6 +9,10 @@ public class IdeaInfoPo {
 
     private String content;
 
+    private String addTime;
+
+    private String deleteStatus;
+
     public String getId() {
         return id;
     }
@@ -39,5 +43,21 @@ public class IdeaInfoPo {
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
+    }
+
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
+    }
+
+    public String getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setAddTime(String addTime) {
+        this.addTime = addTime;
+    }
+
+    public String getAddTime() {
+        return addTime;
     }
 }

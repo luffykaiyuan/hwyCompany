@@ -10,7 +10,7 @@ public class LoginInterceptorConf implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/releaseNews")
+                .addPathPatterns("/releaseNews", "/editNews")
                 .excludePathPatterns("/login", "/doLogin");
     }
 }

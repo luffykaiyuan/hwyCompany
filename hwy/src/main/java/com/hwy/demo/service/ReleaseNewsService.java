@@ -34,7 +34,7 @@ public class ReleaseNewsService {
         }
 
         //返回给前台的url
-        String value = "http://localhost:8080/hwyCompany/upload/img/" + fileName;
+        String value = "/hwyCompany/upload/img/" + fileName;
         String[] values = { value };
 
         ImgInfo imgInfo = new ImgInfo();

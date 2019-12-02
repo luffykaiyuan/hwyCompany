@@ -33,7 +33,7 @@ public class LoginController {
         if (username.equals(loginPo.getUsername()) && password.equals(loginPo.getPassword())) {
             HttpSession session = request.getSession();
             session.setAttribute("name", loginPo.getUsername());
-            return "releaseNews";
+            return "editNews";
         } else {
             return "login";
         }

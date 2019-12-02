@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -56,5 +57,31 @@ public class NewsInfoController {
     @ResponseBody
     public List<NewsInfoPo> selectAllNews(){
         return newsInfoService.selectAllNews();
+    }
+
+    /**
+    * @Description: 获取单挑新闻数据
+    * @Param: [id]
+    * @return: com.hwy.demo.po.NewsInfoPo
+    * @Author: 陈开源
+    * @Date: 2019/11/29
+    */
+    @RequestMapping("/selectByPrimaryKey")
+    @ResponseBody
+    public NewsInfoPo selectByPrimaryKey(@RequestParam String id){
+        return newsInfoService.selectByPrimaryKey(id);
+    }
+
+    /**
+    * @Description: 更新新闻
+    * @Param: [newsInfoPo]
+    * @return: int
+    * @Author: 陈开源
+    * @Date: 2019/11/29
+    */
+    @RequestMapping("/updateNews")
+    @ResponseBody
+    public int updateNews(@RequestBody NewsInfoPo newsInfoPo){
+        return newsInfoService.updateNews(newsInfoPo);
     }
 }

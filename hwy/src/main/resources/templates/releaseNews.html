@@ -29,12 +29,19 @@
 </div>
 <br>
 <div id="editor">
-    <p>请输入新闻内容...</p>
+
 </div>
 <hr>
 <br>
 <div id="app" v-cloak>
-    <el-button style="display:block;margin:0 auto" type="primary" @click="submitForm">发布新闻</el-button>
+    <el-row>
+        <el-col :span="2" :offset="9">
+            <el-button style="display:block;margin:0 auto" type="primary" @click="submitForm">发布新闻</el-button>
+        </el-col>
+        <el-col :span="2" :offset="1">
+            <el-button style="display:block;margin:0 auto" @click="backIndex">返回首页</el-button>
+        </el-col>
+    </el-row>
 </div>
 </body>
 <!-- 富文本编辑器 ！！！-->
@@ -151,12 +158,16 @@
             return {
                 contextPath:'',
                 urls:{
-                    insertNews: '/news/insertNews'
+                    insertNews: '/news/insertNews',
+                    updateNews: '/news/updateNews',
+                    initNews: '/news/selectByPrimaryKey'
                 },
                 newsForm: {
+                    id: '',
                     newsTitle: '',
                     newsContent: '',
                 },
+                suFlag: 'save'
             }
         },
         created: function () {
@@ -164,12 +175,48 @@
             var contextPath = contextPath.split('/')[1];
             var contextPath = "/" + contextPath;
             this.contextPath = contextPath;
+            var self = this;
+
+            var loc = location.href;//获取整个跳转地址内容，其实就是你传过来的整个地址字符串
+            console.log("我的地址"+loc);
+            var n1 = loc.length;//地址的总长
+            var n2 = loc.indexOf("?");//取得=号的位置
+            var parameter = decodeURI(loc.substr(n2+1, n1-n2));//截取从?号后面的内容,也就是参数列表，因为传过来的路径是加了码的，所以要解码
+            var parameters  = parameter.split("&");//从&处拆分，返回字符串数组
+            console.log("参数列表"+parameters);
+            var paValue = new Array();//创建一个用于保存具体值得数组
+            for (var i = 0; i < parameters.length; i++) {
+                console.log("参数键值对值"+i+":"+parameters[i]);
+                var m1 = parameters[i].length;//获得每个键值对的长度
+                var m2 = parameters[i].indexOf("=");//获得每个键值对=号的位置
+                var value = parameters[i].substr(m2+1, m1-m2);//获取每个键值对=号后面具体的值
+                paValue[i] = value;
+                var id =  value;
+            }
+            if(id == loc){
+                self.suFlag = 'save';
+                return
+            }else{
+                self.suFlag = 'update';
+                self.newsForm.id = id;
+                var url = self.contextPath + self.urls.initNews + "?id=" + id;
+                axios.get(url)
+                    .then(function(res){
+                        console.log(res.data);
+                        var title = document.getElementById("newsTitle");
+                        title.value = res.data.newsTitle;
+                        editor.txt.html(res.data.newsContent);
+                    });
+            }
         },
         filters: {},
         mounted: function () {
 
         },
         methods: {
+            backIndex(){
+                window.location.href = this.contextPath + "/editNews";
+            },
             submitForm() {
                 var self = this;
                 this.newsForm.newsContent = editor.txt.html();
@@ -195,15 +242,21 @@
                     });
                     return false;
                 }
-                var url = self.contextPath + self.urls.insertNews;
+                if (this.suFlag == 'save'){
+                    var url = self.contextPath + self.urls.insertNews;
+                }else{
+                    var url = self.contextPath + self.urls.updateNews;
+                    this.newsForm.newsTitle = document.getElementById("newsTitle").value;
+                    this.newsForm.newsContent = editor.txt.html();
+                }
                 axios.post(url, self.newsForm)
                     .then(function(res){
                         console.log(res);
                         self.$message({
-                            message: '新闻已发布成功，3秒后跳转到新闻列表！',
+                            message: '新闻已发布成功，2秒后跳转到管理界面！',
                             type: 'success'
                         });
-                        setTimeout("javascript:location.href='newsList'", 3000);
+                        setTimeout("javascript:location.href='editNews'", 2000);
                     });
             },
             resetForm(formName) {
