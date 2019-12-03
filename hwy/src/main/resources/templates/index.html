@@ -1094,7 +1094,7 @@
 
                     <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 overflow">
                         <div class="testimonial-container wow">
-                            <div class="testimonial-wrapper pagination-style-1 owl-carousel" id="fatherDiv">
+                            <div class="testimonial-wrapper pagination-style-1 owl-carousel" id="fatherDiv" @click="goNewsList">
                                 <!-- SLIDES -->
                                 <div class="item">
                                         <div class="overflow m-t-40">
@@ -1474,6 +1474,9 @@
                     return true;
                 }
             },
+            goNewsList(){
+                window.location.href = this.contextPath + "/newsList";
+            }
         },
         watch: {}
     });

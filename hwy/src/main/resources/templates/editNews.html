@@ -40,7 +40,7 @@
     <el-row>
         <el-col :span="24">
             <el-col :span="22">
-                <div class="grid-content bg-purple">
+                <div class="grid-content bg-purple" @click="backIndex">
                     <img style="width: 2%; border-radius: 15px;float: left" src="">
                 </div>
             </el-col>
@@ -267,8 +267,10 @@
                         message: '已取消删除'
                     });
                 });
+            },
+            backIndex(){
+                window.location.href = this.contextPath + "/index";
             }
-
         },
         watch: {}
     });

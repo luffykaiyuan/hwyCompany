@@ -92,8 +92,9 @@
 
 
                 <!-- TEMPLATE LOGO LIGHT -->
-                <a class="navbar-brand light-logo btn-scroll" onclick="javascript:window.location.href='index'"><img src="images/logo.png" alt="" class="img-responsive"></a>
-
+                <a class="navbar-brand light-logo btn-scroll" @click="backIndex">
+                    <img src="images/logo.png" alt="" class="img-responsive">
+                </a>
             </div>
 
             <!-- Main Menu List -->
@@ -240,6 +241,9 @@
                 // oneDialog.appendChild(twoDialog);
                 // this.newsContent = decodeHtml(this.newsList[index].newsContent);
             },
+            backIndex(){
+                window.location.href = this.contextPath + "/index";
+            }
         },
         watch: {}
     });
