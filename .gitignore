@@ -1,0 +1,5 @@
+.idea
+hwy/target/
+hwy/target/classes/templates/index.html
+hwy/demo.iml
+.idea/$PROJECT_FILE$
