@@ -124,7 +124,7 @@
                 var self = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        var url = self.contextPath + self.urls.loginUrl;
+                        var url = self.urls.loginUrl;
                         axios.post(url, self.loginForm)
                             .then(function (res) {
                                 if (res.data == 'login'){

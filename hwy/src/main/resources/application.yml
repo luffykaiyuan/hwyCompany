@@ -22,14 +22,14 @@ spring:
 #项目路径
 server:
   servlet:
-    context-path: /hwyCompany
+    context-path: /
 
 #mybatis的扫描配置
 mybatis:
   type-aliases-package: com.hwy.demo.dao
   mapper-locations: classpath:mapper/*.xml
 
-uploadPath: D:/upload/img
+uploadPath: C:/upload/img
 
 sys:
   username: admin

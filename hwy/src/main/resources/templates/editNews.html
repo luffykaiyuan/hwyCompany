@@ -178,7 +178,7 @@
         methods: {
             initNews(){
                 var self = this;
-                var newsUrl = self.contextPath + self.urls.initNews;
+                var newsUrl = self.urls.initNews;
                 axios.post(newsUrl)
                     .then(function(res){
                         self.newsData = res.data;
@@ -186,7 +186,7 @@
             },
             initIdea(){
                 var self = this;
-                var ideaUrl = self.contextPath + self.urls.initIdea;
+                var ideaUrl = self.urls.initIdea;
                 axios.post(ideaUrl)
                     .then(function(res){
                         self.ideaData = res.data;
@@ -209,10 +209,10 @@
                 })
             },
             editNews(row){
-                window.location.href = this.contextPath + "/releaseNews?id=" + row.id;
+                window.location.href = "/releaseNews?id=" + row.id;
             },
             releaseNews(){
-                window.location.href = this.contextPath + "/releaseNews";
+                window.location.href = "/releaseNews";
             },
             getNews(){
                 this.changeFlag = 'news';
@@ -228,7 +228,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    var url = self.contextPath  + self.urls.deleteNews;
+                    var url = self.urls.deleteNews;
                     axios.post(url, row)
                         .then(function (res) {
                             self.$message({
@@ -252,7 +252,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    var url = self.contextPath  + self.urls.deleteIdea;
+                    var url =self.urls.deleteIdea;
                     axios.post(url, row)
                         .then(function (res) {
                             self.$message({
@@ -269,7 +269,7 @@
                 });
             },
             backIndex(){
-                window.location.href = this.contextPath + "/index";
+                window.location.href ="/index";
             }
         },
         watch: {}

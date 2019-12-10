@@ -212,7 +212,7 @@
             var contextPath = "/" + contextPath;
             this.contextPath = contextPath;
             var self = this;
-            var url = self.contextPath + self.urls.initNews;
+            var url = self.urls.initNews;
             axios.post(url)
                 .then(function(res){
                     self.newsList = res.data;
@@ -242,7 +242,7 @@
                 // this.newsContent = decodeHtml(this.newsList[index].newsContent);
             },
             backIndex(){
-                window.location.href = this.contextPath + "/index";
+                window.location.href = "/index";
             }
         },
         watch: {}
