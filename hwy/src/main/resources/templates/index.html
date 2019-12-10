@@ -1411,7 +1411,7 @@
             var contextPath = "/" + contextPath;
             this.contextPath = contextPath;
             var self = this;
-            var url = self.contextPath + self.urls.initNews;
+            var url = self.urls.initNews;
             axios.post(url)
                 .then(function(res){
                     self.newsList = res.data;
@@ -1424,7 +1424,7 @@
             submitForm() {
                 var self = this;
                 self.buttonAble = true;
-                var url = self.contextPath + self.urls.insertIdea;
+                var url = self.urls.insertIdea;
                 self.ideaForm.personName = document.getElementById("contact-name").value;
                 self.ideaForm.contactInfo = document.getElementById("contact-email").value;
                 self.ideaForm.content = document.getElementById("contact-message").value;
